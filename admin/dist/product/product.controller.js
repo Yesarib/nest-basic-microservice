@@ -15,24 +15,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductController = void 0;
 const common_1 = require("@nestjs/common");
 const product_service_1 = require("./product.service");
+const microservices_1 = require("@nestjs/microservices");
 let ProductController = class ProductController {
-    constructor(productService) {
+    constructor(productService, client) {
         this.productService = productService;
+        this.client = client;
     }
     async all() {
         return await this.productService.all();
     }
     async create(title, image) {
-        return await this.productService.create({
+        const product = await this.productService.create({
             title,
             image
         });
+        this.client.emit('product_created', product);
+        return product;
     }
     async get(id) {
         return await this.productService.get(id);
     }
     async update(id, title, image) {
-        return await this.productService.update(id, { title, image });
+        const product = await this.productService.update(id, { title, image });
+        this.client.emit('product_updated', product);
+        return product;
     }
     async delete(id) {
         return await this.productService.delete(id);
@@ -78,6 +84,8 @@ __decorate([
 ], ProductController.prototype, "delete", null);
 exports.ProductController = ProductController = __decorate([
     (0, common_1.Controller)('product'),
-    __metadata("design:paramtypes", [product_service_1.ProductService])
+    __param(1, (0, common_1.Inject)('PRODUCT_SERVICE')),
+    __metadata("design:paramtypes", [product_service_1.ProductService,
+        microservices_1.ClientProxy])
 ], ProductController);
 //# sourceMappingURL=product.controller.js.map

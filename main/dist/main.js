@@ -8,7 +8,7 @@ async function bootstrap() {
     app.enableCors({
         origin: "*"
     });
-    await app.listen(process.env.PORT ?? 8080);
+    await app.listen(process.env.PORT ?? 8081);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
