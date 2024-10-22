@@ -6,6 +6,7 @@ import { JwtStrategy } from './jwt/jwt.strategy';
 import { JwtAuthGuard } from './jwt/jwt-auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { HttpModule } from '@nestjs/axios';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -14,10 +15,11 @@ import { HttpModule } from '@nestjs/axios';
       secret: process.env.JWT_SECRET || 'defaultSecretKey',
       signOptions: { expiresIn: '3600s' },
     }),
-    HttpModule
+    HttpModule,
+    ConfigModule
   ],
   providers: [AuthService, JwtStrategy, JwtAuthGuard],
   controllers: [AuthController],
-  exports: [JwtModule,HttpModule],
+  exports: [JwtModule, HttpModule, ConfigModule],
 })
 export class AuthModule { }
