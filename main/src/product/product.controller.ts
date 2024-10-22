@@ -1,7 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { EventPattern } from '@nestjs/microservices';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('product')
 @Controller('product')
 export class ProductController {
     constructor(private productService: ProductService) {
